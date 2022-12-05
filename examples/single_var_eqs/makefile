@@ -8,5 +8,8 @@ all:
 bisection_example:
 	gfortran -I $(bin) $(bin)/shtawa.o $@.f90 -o $@.bin
 
+newton_example:
+	gfortran -I $(bin) $(bin)/shtawa.o $@.f90 -o $@.bin
+
 clean:
 	rm *.bin

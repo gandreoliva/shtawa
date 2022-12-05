@@ -4,4 +4,5 @@ module shtawa
     implicit none
 contains
     include "single_var_eqs/bisection.f90"
+    include "single_var_eqs/newton.f90"
 end module

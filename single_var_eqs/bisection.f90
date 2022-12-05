@@ -1,11 +1,11 @@
 subroutine bisection(f,interv_beg,interv_end,x_sol,tol,maxiter,istat)
-    use iso_fortran_env, only: dp => real64
     !! Solves an equation of the form f(x) == 0, for the variable x (i.e., finds x_sol).
     !! * Theory: Based on the intermediate value theorem:
     !!    Consider a function defined on the interval [a,b], such that f(a) and f(b)
     !!    have opposite signs. Then, there must be at least a value 
     !!    p for which f(p) == 0 (where the sign changes).
     !! * Algorithm: the interval is halved (=bisected) until the sign change (=0) is found.
+    use iso_fortran_env, only: dp => real64
     real(dp), intent(in) :: interv_beg, interv_end
         !! endpoints of the first interval to try
     real(dp), intent(out) :: x_sol
@@ -36,7 +36,7 @@ subroutine bisection(f,interv_beg,interv_end,x_sol,tol,maxiter,istat)
 
     i = 1
     f_at_a = f(a)
-    istat = 1 ! not computed yet
+    istat = -1 ! not computed yet
 
     ! check assumptions on the function
     if (f(a)*f(b) > 0) then
@@ -45,7 +45,7 @@ subroutine bisection(f,interv_beg,interv_end,x_sol,tol,maxiter,istat)
         return
     end if
 
-    do while(i < maxiter)
+    do while(i <= maxiter)
         !  approximate solution in the midpoint
         x_sol = a + (b-a)/2
         f_at_xsol = f(x_sol)
@@ -66,6 +66,6 @@ subroutine bisection(f,interv_beg,interv_end,x_sol,tol,maxiter,istat)
 
     end do
     ! if the maximum number of iterations is reached, the method failed to find a solution
-    write(*,*) "(X) Bisection: No solution found (max. num. of iterations reached)"
+    write(*,*) "(X) Bisection: No solution found after max. num. of iterations"
     istat = 1
 end subroutine
