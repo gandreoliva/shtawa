@@ -8,13 +8,12 @@ program example_bisection
     write(*,*) "Example of the Newton-Raphson subroutine for root finding"
 
     call newton(f, f_deriv, x_approx=pi/4, x_sol=x_sol, &
-        & tol=0.0001d0, maxiter=1000, istat=istat)
+        & tol=1d-8, maxiter=50, istat=istat)
 
-    if (istat == 0) then
-        write(*,*) "Solution: x_sol = ", x_sol
-    else
-        write(*,*) "Failed with status code ", istat
-    end if
+    if (istat /= 0) error stop "Newton method failed"
+
+    write(*,*) "Solution: x_sol = ", x_sol
+    
 
 contains
     real(dp) function f(x)

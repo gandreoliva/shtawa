@@ -3,6 +3,7 @@ module shtawa
     !! Reference for algorithms: Burden & Faires's Numerical Analysis, 9th ed, Cengage Learning.
     implicit none
 contains
-    include "single_var_eqs/bisection.f90"
-    include "single_var_eqs/newton.f90"
+    include "roots/bisection.f90"
+    include "roots/newton.f90"
+    include "roots/complex_newton.f90"
 end module

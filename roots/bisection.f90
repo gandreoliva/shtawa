@@ -5,7 +5,6 @@ subroutine bisection(f,interv_beg,interv_end,x_sol,tol,maxiter,istat)
     !!    have opposite signs. Then, there must be at least a value 
     !!    p for which f(p) == 0 (where the sign changes).
     !! * Algorithm: the interval is halved (=bisected) until the sign change (=0) is found.
-    use iso_fortran_env, only: dp => real64
     real(dp), intent(in) :: interv_beg, interv_end
         !! endpoints of the first interval to try
     real(dp), intent(out) :: x_sol
@@ -40,7 +39,7 @@ subroutine bisection(f,interv_beg,interv_end,x_sol,tol,maxiter,istat)
 
     ! check assumptions on the function
     if (f(a)*f(b) > 0) then
-        write(*,*) "(X) Bisection: f(a) and f(b) have the same sign!"
+        ! write(*,*) "(X) Bisection: f(a) and f(b) have the same sign!"
         istat = 2
         return
     end if
@@ -49,23 +48,27 @@ subroutine bisection(f,interv_beg,interv_end,x_sol,tol,maxiter,istat)
         !  approximate solution in the midpoint
         x_sol = a + (b-a)/2
         f_at_xsol = f(x_sol)
-        !  if the required tolerance is reached, finish
+        
+        ! check approximation
         if ( (f_at_xsol == 0) .or. ((b-a)/2 < tol) ) then
+            ! solution accepted
             istat = 0
             return
-        end if
-        i = i + 1
-        
-        !  for next iteration, compute new endpoints
-        if ( f_at_a*f_at_xsol > 0 ) then
-            a = x_sol
-            f_at_a = f_at_xsol
         else
-            b = x_sol
+            ! prepare next iteration
+            i = i + 1
+            ! new endpoints
+            if ( f_at_a*f_at_xsol > 0 ) then
+                a = x_sol
+                f_at_a = f_at_xsol
+            else
+                b = x_sol
+            end if
+
         end if
 
     end do
     ! if the maximum number of iterations is reached, the method failed to find a solution
-    write(*,*) "(X) Bisection: No solution found after max. num. of iterations"
+    ! write(*,*) "(X) Bisection: No solution found after max. num. of iterations"
     istat = 1
 end subroutine

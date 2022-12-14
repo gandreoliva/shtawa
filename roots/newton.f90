@@ -10,7 +10,6 @@ subroutine newton(f,f_deriv,x_approx,x_sol,tol,maxiter,istat)
     !!      $ p = p_0 - \frac{p_0}{f'(p_0)} $.
     !! $|p-p_0|$ is assumed to be small (too off approx. might not converge), which means that
     !! if we start with an approximation p_0, it can be improved iteratively.
-    use iso_fortran_env, only: dp => real64
     real(dp), intent(in) :: x_approx
         !! initial approximation to the solution
     real(dp), intent(out) :: x_sol
@@ -39,9 +38,10 @@ subroutine newton(f,f_deriv,x_approx,x_sol,tol,maxiter,istat)
     p0 = x_approx
 
     !  check requirements
-    if (abs(f_deriv(p0)) == tol) then
+    if (abs(f_deriv(p0)) < tol) then
         istat = 2
-        write(*,*) "(X) Newton: requirement f'(p_0) = 0 not satisfied!"
+        return
+        ! requirement f'(p_0) = 0 not satisfied!
     end if
 
     istat = -1
@@ -49,6 +49,7 @@ subroutine newton(f,f_deriv,x_approx,x_sol,tol,maxiter,istat)
     do while(i <= maxiter)
         ! approximation to the solution
         p = p0 - f(p0)/f_deriv(p0)
+        ! check whether the solution is good enough
         if (abs(p-p0) < tol) then
             !  solution successfully found
             x_sol = p
@@ -64,7 +65,7 @@ subroutine newton(f,f_deriv,x_approx,x_sol,tol,maxiter,istat)
 
     if (istat /= 0) then
        istat = 1
-        write(*,*) "(X) Newton: No solution found after max. num. of iterations"
+        ! No solution found after max. num. of iterations
     end if
 
 
