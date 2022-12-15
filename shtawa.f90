@@ -6,4 +6,5 @@ contains
     include "roots/bisection.f90"
     include "roots/newton.f90"
     include "roots/complex_newton.f90"
+    include "roots/secant.f90"
 end module

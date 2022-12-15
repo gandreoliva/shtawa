@@ -14,6 +14,9 @@ newton_example:
 newton_fractal:
 	gfortran -I $(bin) $(bin)/shtawa.o $@.f90 -o $@.bin
 
+secant_example:
+	gfortran -I $(bin) $(bin)/shtawa.o $@.f90 -o $@.bin
+
 clean:
 	rm *.bin
 

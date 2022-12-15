@@ -1,4 +1,4 @@
-program complex_newton_example
+program newton_fractal
     use iso_fortran_env, only: dp => real64
     use shtawa
     implicit none
@@ -14,6 +14,18 @@ program complex_newton_example
     integer :: file_colors
     character(100), parameter :: filename_colors = "data/newton_fractal.dat"
     character(1000) :: pycmd
+
+    ! ** Generation of Newton's fractal.
+    ! This program uses Newton's method to compute the solution of f(z) == 0
+    ! by using every point in a grid of complex numbers as the initial approximation z_approx.
+    ! It also demonstrates how to estimate point-like roots of a function by finding local minima
+    ! of the function f(z) whose norm values are close to zero.
+    ! For polynomials (or other complex functions) with multiple roots, and given different initial
+    ! approximations, Newton's method converges to different solutions. If one maps each initial
+    ! approx. (z_grid point) to the root it converges to, the Newton fractal is obtained.
+    ! When run, this program saves the fractal data to the data/ folder
+    ! (it must exist before running!) and calls a Python script to plot the fractal.
+
 
     ! Part I: Estimate the zeros of the function in a regular grid by minimizing the norm
     ! of f(z) (small norm => f(z) ~ 0). This algorithm only finds the minimum values within a
@@ -55,7 +67,7 @@ program complex_newton_example
     close(file_colors)
 
     ! plot the fractal
-    write(pycmd,*) "python newton_fractal_plot.py ", filename_colors, " ", nx+1, " ", ny+1
+    write(pycmd,*) "python newton_fractal_plot.py ", filename_colors, " ", nx+1, ny+1, l
     ! print*, pycmd
     call execute_command_line(pycmd)
 
