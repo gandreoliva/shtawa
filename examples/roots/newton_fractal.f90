@@ -109,7 +109,7 @@ contains
         f_grid = reshape( [ (( f(z_grid(i,j)) ,j=0,ny), i=0,nx) ] , shape = [nx+1,ny+1])
         f_r_grid = sqrt(f_grid*conjg(f_grid))
 
-        est_zeros = [0d0] ! temporary initialization of the list with a first element
+        allocate(est_zeros(0))
         ! Find local minima, i.e., where f_r ~ 0 but also smaller than its neighbors in cross
         do i=1,nx-1
             do j=1,ny-1
@@ -124,7 +124,6 @@ contains
                 end if
             end do
         end do
-        est_zeros = est_zeros(2:) ! get rid of first element
     end subroutine
 
 end program
