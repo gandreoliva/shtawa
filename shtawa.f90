@@ -12,4 +12,6 @@ contains
     include "linalg/gaussjordan.f90"
     include "linalg/determinant.f90"
     include "linalg/inverse.f90"
+    include "linalg/tridiag_crout.f90"
+    include "linalg/complex_eigenval_power.f90"
 end module

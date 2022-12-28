@@ -1,7 +1,10 @@
 subroutine secant(f,x_approx0,x_approx1,x_sol,tol,maxiter,istat)
     !! Secant method for root finding.
-    !! * Theory
-    !! based on Newton's method
+    
+    !! Theory
+    !! ------
+    !!
+    !! This method is based on Newton's method (see Newton's method doc)
     !!  $ p_n = p_{n-1} - \frac{p_{n-1}}{f'(p_{n-1})} $,
     !! but numerically computing the derivative of f, that is
     !!  $f'(p_{n-1}) = \frac{f(p_{n-1}) - f(p_{n-2})}{p_{n-1} - p_{n-2}}$

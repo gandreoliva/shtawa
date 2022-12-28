@@ -1,8 +1,13 @@
 subroutine complex_newton(f,f_deriv,z_approx,z_sol,tol,maxiter,istat)
     !! Newton(-Raphson) method for root finding, for complex numbers
-    !! * Theory
-    !! based on a Taylor series expansion around the solution z_sol and a given initial
-    !! approximation z_approx. Consider the problem $f(xz) = 0$. (f(z) and its derivative
+
+    !! Theory
+    !! ------
+    !! Newton's method aims to solve the one-variable complex equation f(z) == 0,
+    !! if we know the derivative of f, f'(z), and an initial guess for the solution.
+
+    !! It's based on a Taylor series expansion around the solution z_sol and a given initial
+    !! approximation z_approx. Consider the problem $f(z) = 0$. (f(z) and its derivative
     !! should be analytical over an interval). Let $p_0$ be an approximation
     !! to the solution z_sol:= $p$ such that $f'($p_0$) \neq 0$. Now, consider the Taylor expansion
     !!      $ 0 = f(p) = f(p_0) + (p - p_0) f'(p_0) + O(2) $

@@ -17,6 +17,12 @@ determinant_example: shtawa
 inverse_example: shtawa
 	gfortran -I $(bin) $(bin)/shtawa.o $@.f90 -o $@.bin
 
+tridiag_crout_example: shtawa
+	gfortran -I $(bin) $(bin)/shtawa.o $@.f90 -o $@.bin
+
+complex_eigenval_power_example: shtawa
+	gfortran -I $(bin) $(bin)/shtawa.o $@.f90 -o $@.bin
+
 shtawa:
 	make -C ../../
 

@@ -1,10 +1,9 @@
 subroutine linsys_gauss(a,x,istat)
-    !! Solves the linear system represented by a*x == b,
+    !! Solves the linear system represented by a(:,:n)*x == a(:,n+1),
     !!  a(1,1)*x(1) + a(1,2)*x(2) + ... = a(1,n+1)
     !!  a(2,1)*x(1) + a(2,1)*x(2) + ... = a(2,n+1)
     !!  ...
     !!  a(1,n)*x(1) + a(2,n)*x(2) + ... = a(n,n+1)
-    !!      with a(:,n+1) := b,
     !! by means of Gauss elimination with backward substitution.
     !! Elemental operations on a matrix m:
     !!      1. Multiply row i by a constant k: m(i,:) = k*m(i,:)

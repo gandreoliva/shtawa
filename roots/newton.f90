@@ -1,7 +1,12 @@
 subroutine newton(f,f_deriv,x_approx,x_sol,tol,maxiter,istat)
     !! Newton(-Raphson) method for root finding.
-    !! * Theory
-    !! based on a Taylor series expansion around the solution x_sol and a given initial
+    
+    !! Theory
+    !! ------
+    !! Newton's method aims to solve the one-variable equation f(x) == 0, if we know the
+    !! derivative of f, f'(x), and an initial guess for the solution.
+    
+    !! It's based on a Taylor series expansion around the solution x_sol and a given initial
     !! approximation x_approx. Consider the problem $f(x) = 0$. (f(x) and its derivative
     !! should be continuous and differentiable over an interval). Let $p_0$ be an approximation
     !! to the solution x_sol:= $p$ such that $f'($p_0$) \neq 0$. Now, consider the Taylor expansion

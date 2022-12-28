@@ -1,10 +1,14 @@
 subroutine bisection(f,interv_beg,interv_end,x_sol,tol,maxiter,istat)
-    !! Solves an equation of the form f(x) == 0, for the variable x (i.e., finds x_sol).
-    !! * Theory: Based on the intermediate value theorem:
+    !! Solves an equation of the form f(x) == 0, for the variable x,
+    !! where x is in a given interval [beg,end] where f changes sign.
+    
+    !! Theory
+    !! ------
+    !! It's based on the intermediate value theorem:
     !!    Consider a function defined on the interval [a,b], such that f(a) and f(b)
     !!    have opposite signs. Then, there must be at least a value 
     !!    p for which f(p) == 0 (where the sign changes).
-    !! * Algorithm: the interval is halved (=bisected) until the sign change (=0) is found.
+    !! Algorithm: the interval is halved (=bisected) until the sign change (=0) is found.
     real(dp), intent(in) :: interv_beg, interv_end
         !! endpoints of the first interval to try
     real(dp), intent(out) :: x_sol
