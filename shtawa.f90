@@ -14,4 +14,9 @@ contains
     include "linalg/inverse.f90"
     include "linalg/tridiag_crout.f90"
     include "linalg/complex_eigenval_power.f90"
+
+    include "combinatorics/ncartprod.f90"
+    include "combinatorics/permutations.f90"
+    include "combinatorics/combinations.f90"
+
 end module
