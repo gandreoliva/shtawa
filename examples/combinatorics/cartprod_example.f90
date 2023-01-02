@@ -7,7 +7,7 @@ program cartprod_example
     integer, dimension(:,:), allocatable :: cartprod
     integer :: i,nproducts
 
-    sets_ubounds = [2,4,1]
+    sets_ubounds = [2,2,2]
     
     print*, "Recursive general version:"
     call get_ncartprod(sets_ubounds,cartprod)
@@ -20,22 +20,22 @@ program cartprod_example
     print*, nproducts, "products in total"
 
 
-    block
-        integer :: i,j,k
-        nproducts = 0
-        print*, "========="
-        print*, "Iterative version:"
-        do i=1,sets_ubounds(1)
-            do j=1,sets_ubounds(2)
-                do k=1,sets_ubounds(3)
-                    print*, i,j,k
-                    nproducts = nproducts + 1
-                end do
-            end do
-        end do
-        print*, nproducts
+    ! block
+    !     integer :: i,j,k
+    !     nproducts = 0
+    !     print*, "========="
+    !     print*, "Iterative version:"
+    !     do i=1,sets_ubounds(1)
+    !         do j=1,sets_ubounds(2)
+    !             do k=1,sets_ubounds(3)
+    !                 print*, i,j,k
+    !                 nproducts = nproducts + 1
+    !             end do
+    !         end do
+    !     end do
+    !     print*, nproducts
 
-    end block
+    ! end block
 
 
 end program

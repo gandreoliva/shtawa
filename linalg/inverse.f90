@@ -1,8 +1,8 @@
 function inverse(a)
     !! Computes the inverse of the matrix 'a' using the Gauss-Jordan procedure
     !! Warning: if 'a' is not invertible, the function throws an error and stops
-    real(dp), dimension(:,:), intent(in) :: a
-    real(dp), dimension(:,:), allocatable :: a_augm, inverse, unit
+    real(wp), dimension(:,:), intent(in) :: a
+    real(wp), dimension(:,:), allocatable :: a_augm, inverse, unit
     integer :: i,n, istat
     n = size(a,1)
 

@@ -15,19 +15,19 @@ subroutine complex_newton(f,f_deriv,z_approx,z_sol,tol,maxiter,istat)
     !!      $ p = p_0 - \frac{p_0}{f'(p_0)} $.
     !! $|p-p_0|$ is assumed to be small (too off approx. might not converge), which means that
     !! if we start with an approximation p_0, it can be improved iteratively.
-    complex(dp), intent(in) :: z_approx
+    complex(wp), intent(in) :: z_approx
         !! initial approximation to the solution
-    complex(dp), intent(out) :: z_sol
+    complex(wp), intent(out) :: z_sol
         !! approximation to the solution
-    real(dp), intent(in) :: tol
+    real(wp), intent(in) :: tol
         !! tolerance to the solution
     integer, intent(in) :: maxiter
         !! maximum number of iterations allowed
     interface
-        complex(dp) function single_var_func_signature(z)
+        complex(wp) function single_var_func_signature(z)
             !! Signature that f must have
-            import :: dp
-            complex(dp), intent(in) :: z
+            import :: wp
+            complex(wp), intent(in) :: z
         end function
     end interface
     procedure(single_var_func_signature) :: f
@@ -38,7 +38,7 @@ subroutine complex_newton(f,f_deriv,z_approx,z_sol,tol,maxiter,istat)
     !! end state of the algorithm. 0: success (z_sol valid). 1: maximum number of iterations
     !!  reached without a solution; 2: f'(p_0) = 0, i.e., requirement not satisfied
     integer :: i
-    complex(dp) :: p,p0
+    complex(wp) :: p,p0
 
     p0 = z_approx
 

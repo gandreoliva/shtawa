@@ -45,16 +45,16 @@ subroutine linsys_gauss(a,x,istat)
     !! elimination, we see that row2 - a21*a11*row1 = row2 + 0 --> row2  doesn't change
     !! the matrix. Backwards substitution gives us x2=2, x1=1.
     !! ```
-    real(dp), dimension(1:), intent(out) :: x
+    real(wp), dimension(1:), intent(out) :: x
         !! 1d array with the solution to the unknowns: x = [x1,x2,x3,...]
-    real(dp), dimension(1:,1:), intent(inout) :: a
+    real(wp), dimension(1:,1:), intent(inout) :: a
         !! augmented 2d matrix with the coefficients (columns) of each equation (rows).
         !! If n is the number of equations, a should have shape (n,n+1), with the last
         !! column being the coefficients not multiplied by an unknown.
     integer, intent(out) :: istat
         !! 0: success, 1: no unique solution exists
     integer :: i,k,n  ,l
-    real(dp) :: multiplier
+    real(wp) :: multiplier
 
     istat = -1
     n = size(x)
@@ -124,8 +124,8 @@ subroutine linsys_gauss(a,x,istat)
 contains
     elemental subroutine swap(a1,a2)
         !! swaps the values of two reals (or arrays)
-        real(dp), intent(inout) :: a1,a2
-        real(dp) :: temp
+        real(wp), intent(inout) :: a1,a2
+        real(wp) :: temp
         temp = a1
         a1 = a2
         a2 = temp

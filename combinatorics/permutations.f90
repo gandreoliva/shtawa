@@ -1,8 +1,7 @@
-subroutine get_permutations_slow(n,permutations)
-    !! Gets the permutations of all the elements of a given set by generating the
+recursive subroutine get_permutations_slow(n,permutations)
+    !! Generates the permutations of all the elements of a given set by generating the
     !! Cartesian product and discarding repeated elements (this is why it's slow).
 
-    !! This is a wrapper to the function gen_permutations_slow, for convenience of call.
     !! Algorithm from rosettacode.org
 
     !! Theory
@@ -15,32 +14,18 @@ subroutine get_permutations_slow(n,permutations)
     !! This subroutine generates the indices of the permutations starting at 1,
     !! which can be used to get the permutations of the elements of any array that
     !! contains the set.
-    
-    integer, intent(in) :: n
-        !! Number of elements of the set 
-    integer, dimension(:,:), allocatable, intent(out) :: permutations
-        !! Array shape(n,number_of_permutations) that contains one permutation of the set
-        !! in each column.
-    integer, dimension(:), allocatable :: permutation
-
-    allocate(permutations(n,0))
-    allocate(permutation(n))
-    call gen_permutations_slow(1,n,permutation,permutations)
-
-end subroutine
-
-recursive subroutine gen_permutations_slow(ind_element,n,permutation,permutations)
-    !! This function generates all the permutations recursively. 
-    !! For an introduction to recursion, see the documentation of cartprod
-    integer, intent(in) :: ind_element
+    integer, save :: ind_element = 1
         !! index of the currently examined element in the set
     integer, intent(in) :: n
         !! Total number of elements in the (original) set
-    integer, dimension(:), intent(inout), allocatable :: permutation
+    integer, dimension(:), allocatable, save :: permutation
         !! Work array (communicates information from outer calls into deeper calls)
     integer, dimension(:,:), intent(inout), allocatable :: permutations
         !! Output array
     integer :: i
+
+    if (.not. allocated(permutations)) allocate(permutations(n,0))
+    if (.not. allocated(permutation)) allocate(permutation(n))
 
     if (ind_element > n) then
         !! We are done, all elements have been examined
@@ -52,10 +37,12 @@ recursive subroutine gen_permutations_slow(ind_element,n,permutation,permutation
             !! If the element is not already in the permutation, continue
             if (.not. any(permutation(:ind_element-1) == i)) then
                 permutation(ind_element) = i
-                call gen_permutations_slow(ind_element+1,n,permutation,permutations)
+                ind_element = ind_element + 1
+                call get_permutations_slow(n,permutations)
             end if
         end do
     end if
 
+    ind_element = ind_element - 1
 
 end subroutine

@@ -9,11 +9,11 @@ subroutine bisection(f,interv_beg,interv_end,x_sol,tol,maxiter,istat)
     !!    have opposite signs. Then, there must be at least a value 
     !!    p for which f(p) == 0 (where the sign changes).
     !! Algorithm: the interval is halved (=bisected) until the sign change (=0) is found.
-    real(dp), intent(in) :: interv_beg, interv_end
-        !! endpoints of the first interval to try
-    real(dp), intent(out) :: x_sol
+    real(wp), intent(in) :: interv_beg, interv_end
+        !! enwpoints of the first interval to try
+    real(wp), intent(out) :: x_sol
         !! approximated solution
-    real(dp), intent(in) :: tol
+    real(wp), intent(in) :: tol
         !! tolerance
     integer, intent(in) :: maxiter
         !! maximum number of iterations
@@ -22,17 +22,17 @@ subroutine bisection(f,interv_beg,interv_end,x_sol,tol,maxiter,istat)
         !! 0: success (x_sol is valid, otherwise it's invalid)
         !! 1: max. iterations reached without solution; 2: f(a) and f(b) have the same sign.
     interface
-        real(dp) function f_signature(x)
+        real(wp) function f_signature(x)
             !! Signature that f must have
-            import :: dp
-            real(dp), intent(in) :: x
+            import :: wp
+            real(wp), intent(in) :: x
         end function
     end interface
     procedure(f_signature) :: f
         !! single variable function f(x) for finding the roots
 
     integer :: i
-    real(dp) :: f_at_a, f_at_xsol, a, b
+    real(wp) :: f_at_a, f_at_xsol, a, b
 
     a = interv_beg
     b = interv_end
@@ -49,7 +49,7 @@ subroutine bisection(f,interv_beg,interv_end,x_sol,tol,maxiter,istat)
     end if
 
     do while(i <= maxiter)
-        !  approximate solution in the midpoint
+        !  approximate solution in the miwpoint
         x_sol = a + (b-a)/2
         f_at_xsol = f(x_sol)
         
@@ -61,7 +61,7 @@ subroutine bisection(f,interv_beg,interv_end,x_sol,tol,maxiter,istat)
         else
             ! prepare next iteration
             i = i + 1
-            ! new endpoints
+            ! new enwpoints
             if ( f_at_a*f_at_xsol > 0 ) then
                 a = x_sol
                 f_at_a = f_at_xsol

@@ -37,13 +37,13 @@ subroutine tridiag_crout(a,x)
     !! Once z is determined, then we can solve u @ x == z by backwards substitution
     !! and the problem is solved.
 
-    real(dp), dimension(:,:), intent(inout) :: a
+    real(wp), dimension(:,:), intent(inout) :: a
         !! augmented tridiagonal matrix to be solved, shape (n,n+1). It is overwritten
         !! after calling the subroutine, so make sure you make a copy beforehand if needed!
-    real(dp), dimension(:), intent(out) :: x
+    real(wp), dimension(:), intent(out) :: x
         !! solution vector, shape (n)
     integer :: i,n
-    real(dp), dimension(:), allocatable :: z
+    real(wp), dimension(:), allocatable :: z
 
     n = size(a,1)
     allocate(z(1:n))

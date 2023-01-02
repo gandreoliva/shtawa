@@ -15,19 +15,19 @@ subroutine newton(f,f_deriv,x_approx,x_sol,tol,maxiter,istat)
     !!      $ p = p_0 - \frac{p_0}{f'(p_0)} $.
     !! $|p-p_0|$ is assumed to be small (too off approx. might not converge), which means that
     !! if we start with an approximation p_0, it can be improved iteratively.
-    real(dp), intent(in) :: x_approx
+    real(wp), intent(in) :: x_approx
         !! initial approximation to the solution
-    real(dp), intent(out) :: x_sol
+    real(wp), intent(out) :: x_sol
         !! approximation to the solution
-    real(dp), intent(in) :: tol
+    real(wp), intent(in) :: tol
         !! tolerance to the solution
     integer, intent(in) :: maxiter
         !! maximum number of iterations allowed
     interface
-        real(dp) function single_var_func_signature(x)
+        real(wp) function single_var_func_signature(x)
             !! Signature that f must have
-            import :: dp
-            real(dp), intent(in) :: x
+            import :: wp
+            real(wp), intent(in) :: x
         end function
     end interface
     procedure(single_var_func_signature) :: f
@@ -38,7 +38,7 @@ subroutine newton(f,f_deriv,x_approx,x_sol,tol,maxiter,istat)
     !! end state of the algorithm. 0: success (x_sol valid). 1: maximum number of iterations
     !!  reached without a solution; 2: f'(p_0) = 0, i.e., requirement not satisfied
     integer :: i
-    real(dp) :: p,p0
+    real(wp) :: p,p0
 
     p0 = x_approx
 

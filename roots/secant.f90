@@ -11,19 +11,19 @@ subroutine secant(f,x_approx0,x_approx1,x_sol,tol,maxiter,istat)
     !! so that it's no longer necessary to provide f_deriv, but in turn it's necessary
     !! to provide two approximations instead of one.
 
-    real(dp), intent(in) :: x_approx0, x_approx1
+    real(wp), intent(in) :: x_approx0, x_approx1
         !! initial approximations to the solution
-    real(dp), intent(out) :: x_sol
+    real(wp), intent(out) :: x_sol
         !! approximation to the solution
-    real(dp), intent(in) :: tol
+    real(wp), intent(in) :: tol
         !! tolerance to the solution
     integer, intent(in) :: maxiter
         !! maximum number of iterations allowed
     interface
-        real(dp) function single_var_func_signature(x)
+        real(wp) function single_var_func_signature(x)
             !! Signature that f must have
-            import :: dp
-            real(dp), intent(in) :: x
+            import :: wp
+            real(wp), intent(in) :: x
         end function
     end interface
     procedure(single_var_func_signature) :: f
@@ -32,7 +32,7 @@ subroutine secant(f,x_approx0,x_approx1,x_sol,tol,maxiter,istat)
     !! end state of the algorithm. 0: success (x_sol valid). 1: maximum number of iterations
     !!  reached without a solution; 2: f'(p_0) = 0, i.e., requirement not satisfied
     integer :: i
-    real(dp) :: p,p0,p1,f_deriv_recipr
+    real(wp) :: p,p0,p1,f_deriv_recipr
 
     p0 = x_approx0
     p1 = x_approx1

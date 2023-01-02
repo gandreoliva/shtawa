@@ -19,15 +19,15 @@ subroutine linsys_gaussjordan(a,x,istat)
     !!  | 0     0       a33     b3... |
     !! after which the solution is easily read in col. n+1 by dividing each row 
     !! over the diagonal.
-    real(dp), dimension(:,:), allocatable, intent(out) :: x
+    real(wp), dimension(:,:), allocatable, intent(out) :: x
         !! 2d array, shape (n,m) with the solution vectors of each one of the m equations.
-    real(dp), dimension(1:,1:), intent(inout) :: a
+    real(wp), dimension(1:,1:), intent(inout) :: a
         !! augmented 2d matrix with the coefficients (columns) of each equation (rows).
         !! It has a shape (n,n+m).
     integer, intent(out) :: istat
         !! 0: success, 1: no unique solution exists
     integer :: i,k,n,m,l
-    real(dp) :: multiplier
+    real(wp) :: multiplier
 
     n = size(a,1)
     m = size(a,2) - n
@@ -99,8 +99,8 @@ subroutine linsys_gaussjordan(a,x,istat)
 contains
     elemental subroutine swap(a1,a2)
         !! swaps the values of two reals (or arrays)
-        real(dp), intent(inout) :: a1,a2
-        real(dp) :: temp
+        real(wp), intent(inout) :: a1,a2
+        real(wp) :: temp
         temp = a1
         a1 = a2
         a2 = temp

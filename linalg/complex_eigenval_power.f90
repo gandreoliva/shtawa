@@ -26,24 +26,24 @@ subroutine complex_eigenval_power(a,x,eigenval,tol,niter,istat)
     !! we normalize the vector. Customary, the L_inf norm is used for general matrices
     !! and the L2 norm is used for symmetric matrices. The L_inf norm of x is essentially
     !! the maximum value of the absolute value (or complex norm) of its entries.
-    complex(dp), dimension(:,:), intent(in) :: a
+    complex(wp), dimension(:,:), intent(in) :: a
         !! Matrix for which the eigenvalue and eigenvector is to be computed. Shape (1:n,1:n)
-    complex(dp), dimension(:,:), intent(inout) :: x
+    complex(wp), dimension(:,:), intent(inout) :: x
         !! Initial vector when it goes in, approximation to the dominant eigenvector 
         !! when it goes out. It should have shape (1:n,1) (column vector)
-    complex(dp), intent(out) :: eigenval
+    complex(wp), intent(out) :: eigenval
         !! Approximation to the dominant eigenvalue
-    real(dp), intent(in) :: tol
+    real(wp), intent(in) :: tol
         !! tolerance of the solution
     integer, intent(in) :: niter
         !! Maximum number of iterations
     integer, intent(out) :: istat
         !! 0: sucess; 1: maximum number of iterations reached; 2: eigenval = 0, another vector
         !! should be selected.
-    complex(dp), parameter :: iimag = (0d0,1d0)
+    complex(wp), parameter :: iimag = (0d0,1d0)
     integer :: k,n,normloc
-    complex(dp), dimension(:,:), allocatable :: x_next !! next approx for x
-    real(dp) :: diff_convergence
+    complex(wp), dimension(:,:), allocatable :: x_next !! next approx for x
+    real(wp) :: diff_convergence
 
     n = size(a,1)
     allocate(x_next(n,1))

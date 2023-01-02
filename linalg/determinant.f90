@@ -16,11 +16,11 @@ recursive function determinant(a) result(res)
     !!  i.e., with a sum with alternating signs (even columns have a negative sign),
     !!  and where b(-i,-j) means the submatrix without row i and column j.
 
-    real(dp), dimension(1:,1:), intent(in) :: a
+    real(wp), dimension(1:,1:), intent(in) :: a
         !! (square, 2d) matrix to compute the determinant
-    real(dp), dimension(:,:), allocatable :: b
+    real(wp), dimension(:,:), allocatable :: b
     integer :: sgn, n, j
-    real(dp) :: res
+    real(wp) :: res
 
     n = size(a,1)
     allocate(b(n-1,n-1))
