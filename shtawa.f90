@@ -24,5 +24,7 @@ contains
     include "interp/multilinear_interp.f90"
     include "interp/spline_interp.f90"
 
+    include "ode/rk4.f90"
+
 
 end module
