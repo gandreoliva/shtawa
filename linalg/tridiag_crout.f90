@@ -72,7 +72,7 @@ subroutine tridiag_crout(a,x)
             l(i,i-1) = a(i,i-1)
             !! Build the diagonal elements of l
             l(i,i) = a(i,i) - l(i,i-1)*u(i-1,i)
-            !! Build the elements of u on top of the diagonal
+            !! Build the elements of u right to the diagonal
             u(i,i+1) = a(i,i+1)/l(i,i)
             !! Forward substitution to solve for z
             z(i) = (a(i,n+1) - l(i,i-1)*z(i-1))/l(i,i)
@@ -88,6 +88,78 @@ subroutine tridiag_crout(a,x)
         i = n-1
         do while(i >= 1)
             x(i) = z(i) - u(i,i+1)*x(i+1)
+            i = i-1
+        end do
+
+    end associate
+
+end subroutine
+
+
+
+subroutine tridiag(a_l,a_d,a_r,b,x)
+    !! Solves the tridiagonal system a @ x == b, where
+    !!        a =   |a_d(1) a_r(1)                   0                   |
+    !!              |a_l(1) a_d(2)  a_r(2)                               |
+    !!              |       a_l(2)  a_d(3)  a_r(3)                       |
+    !!              |        ...    ...     ...                          |
+    !!              |                                            a_r(n-1)|
+    !!              |      0                            a_l(n-1)   a_d(n)|
+    !! with the Crout method and memory optimization, 
+    !! i.e., the zero-elements are never stored in memory.
+    !! See the documentation of tridiag_crout for more information on how the method
+    !! works.
+
+    real(wp), dimension(:), intent(inout) :: a_d
+        !! Diagonal elements of 'a' (size n).
+        !! Warning: this variable is overwritten after the function call!
+    real(wp), dimension(:), intent(inout) :: a_l
+        !! Elements of 'a' left from the diagonal (size n-1)
+        !! Warning: this variable is overwritten after the function call!
+    real(wp), dimension(:), intent(inout) :: a_r
+        !! Elements of 'a' right from the diagonal (size n-1)
+        !! Warning: this variable is overwritten after the function call!
+    real(wp), dimension(:), intent(inout) :: b
+        !! Right-hand-side of the system of equations a @ x = b  (size n)
+    real(wp), dimension(:), intent(out) :: x
+        !! solution vector, (size n)
+    integer :: i,n
+    real(wp), dimension(:), allocatable :: z
+
+    n = size(a_d)
+    allocate(z(1:n))
+
+    !! Aliases to the matrices l and u for clarity.
+    associate (l_d => a_d, l_l => a_l, u_r => a_r)
+        
+        !! Part I: Building l and u, and solving l @ z == b.
+        
+        !! First element
+        l_d(1) = a_d(1)
+        u_r(1) = a_r(1)/l_d(1)
+        z(1) = b(1)/l_d(1)
+
+        do i=2,n-1
+            !! Build the elements of l left to the diagonal
+            l_l(i) = a_l(i)
+            !! Build the diagonal elements of l
+            l_d(i) = a_d(i) - l_l(i)*u_r(i-1)
+            !! Build the elements of u right to the diagonal
+            u_r(i) = a_r(i)/l_d(i)
+            !! Forward substitution to solve for z
+            z(i) = (b(i) - l_l(i)*z(i-1))/l_d(i)
+        end do
+
+        !! Final elements
+        l_l(n-1) = a_l(n-1)
+        l_d(n) = a_d(n) - l_l(n-1)*u_r(n-1)
+        z(n) = (b(n) - l_l(n-1)*z(n-1))/l_d(n)
+
+        !! Part II: Solution of u @ x == z: backwards substitution
+        x(n) = z(n)
+        i = n-1
+        do while(i >= 1)
+            x(i) = z(i) - u_r(i)*x(i+1)
             i = i-1
         end do
 

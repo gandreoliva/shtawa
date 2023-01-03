@@ -22,5 +22,7 @@ contains
 
     include "interp/linear_interp.f90"
     include "interp/multilinear_interp.f90"
+    include "interp/spline_interp.f90"
+
 
 end module

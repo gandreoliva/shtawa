@@ -29,8 +29,7 @@ end function
 
 
 subroutine locate_points_in_grid(x,x_grid,ind_left)
-    !! Locates a list of 1d points x in a grid using bisection
-    !! Reference: Numerical Recipes
+    !! Locates a list of 1d points x in a grid using the bisection algorithm
     real(wp), dimension(:), intent(in) :: x
         !! List of x values (points) to be located
     real(wp), dimension(:), intent(in) :: x_grid
@@ -44,7 +43,7 @@ subroutine locate_points_in_grid(x,x_grid,ind_left)
         !! before evaluating!
         !! * If ind_left = 0, it means that x is outside (to the left) of the grid.
         !! * If ind_left = n, it means that x is outside (to the right) of the grid.
-    integer :: curr_ind_left, curr_i_right, curr_i_midpoint
+    integer :: curr_i_left, curr_i_right, curr_i_midpoint
     integer :: ngrid, npoints, j
     logical :: is_ascending !! Whether x_grid is in ascending or descending order
     
@@ -54,14 +53,14 @@ subroutine locate_points_in_grid(x,x_grid,ind_left)
     is_ascending =  ( x_grid(ngrid) >= x_grid(1) )
     
     do concurrent (j=1:npoints) !! for every point in x...
-        curr_ind_left = 0
+        curr_i_left = 0
         curr_i_right = ngrid + 1
         
         !! Bisection for integers
-        do while (curr_i_right - curr_ind_left > 1)
-            curr_i_midpoint = (curr_ind_left + curr_i_right)/2
+        do while (curr_i_right - curr_i_left > 1)
+            curr_i_midpoint = (curr_i_left + curr_i_right)/2
             if ( (x(j) >= x_grid(curr_i_midpoint)) .eqv. is_ascending ) then
-                curr_ind_left = curr_i_midpoint
+                curr_i_left = curr_i_midpoint
             else
                 curr_i_right = curr_i_midpoint
             end if
@@ -73,7 +72,7 @@ subroutine locate_points_in_grid(x,x_grid,ind_left)
         else if (x(j) == x_grid(ngrid)) then
             ind_left(j) = ngrid - 1
         else
-            ind_left(j) = curr_ind_left
+            ind_left(j) = curr_i_left
         end if
     end do
 

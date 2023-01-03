@@ -11,7 +11,7 @@ linear_interp_example: shtawa
 multilinear_interp_example: shtawa
 	gfortran -I $(bin) $(bin)/shtawa.o $@.f90 -o $@.bin
 
-multilinear_interp_example2: shtawa
+spline_interp_example: shtawa
 	gfortran -I $(bin) $(bin)/shtawa.o $@.f90 -o $@.bin
 
 shtawa:
