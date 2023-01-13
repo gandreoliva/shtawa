@@ -13,8 +13,11 @@ Shtawa is composed of functions and subroutines ("procedures") which try to be d
 | ----------|-------------|
 | `roots/`  | Root-finding algorithms (solutions to equations) |
 | `linalg/` | Linear algebral (matrices, linear systems of equations) |
+| `interp/` | Interpolation (1d and Nd linear, cubic spline) |
+| `combinatorics/` | recursive generation of cominations, permutations, etc. |
+| `ode/`	| Ordinary differential equations |
 
-The in a Fortran source file, the procedures are accessible by a module
+In a Fortran source file, the procedures are accessible by a module
 ```use shtawa```
 and including the binary objects during compilation (see the makefiles in the `examples/` directories for reference on how to link the library to your source code).
 

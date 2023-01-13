@@ -25,7 +25,6 @@ subroutine rk4(f,y0,t_initial,t_final,niter,t_array,y_array)
 	!! b) p and q are in principle arbitrary, so that different combinations give different
 	!! methods. The Runge-Kutta 4 method is has a truncation error O(4).
 
-	! rk4(f,y0,t_initial,t_final,niter,t,y)
 	real(wp), dimension(:), intent(in) :: y0
 		!! Initial condition y(t=t_initial) = y0
 	real(wp), intent(in) :: t_initial, t_final
