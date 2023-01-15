@@ -1,7 +1,7 @@
-subroutine rk4(f,y0,t_initial,t_final,niter,t_array,y_array)
+subroutine rk4(f,y0,t_initial,t_final,niter,outfile,stopping_cond)
 	!! Approximates the initial-value problem y'(t) = f(t,y(t)) with the initial
 	!! condition y(t=t_initial) = y0
-	!!
+
 	!! Theory
 	!! ------
 	!! * Introduction to Runge-Kutta methods:
@@ -31,24 +31,38 @@ subroutine rk4(f,y0,t_initial,t_final,niter,t_array,y_array)
 		!! Initial and final values of t
 	integer, intent(in) :: niter
 		!! Total number of iterations
-	real(wp), dimension(:), allocatable, optional, intent(out) :: t_array
-		!! If present, all discretized values of t. If not, they are printed.
-	real(wp), dimension(:,:), allocatable, optional, intent(out) :: y_array
-		!! If present, all discretized values of y. If not, they are printed.
 	interface
 		function f(t,y)
+			!! Right-hand-side of the (system of) ODEs
 			import wp
 			real(wp), intent(in) :: t
 			real(wp), dimension(:), intent(in) :: y
-			real(wp) :: f
+			real(wp), dimension(size(y)) :: f
+		end function
+		function stopping_cond_signature(t,y)
+			!! Function that determines when to stop integrating
+			import wp
+			real(wp), intent(in) :: t
+			real(wp), dimension(:), intent(in) :: y
+			logical :: stopping_cond_signature
 		end function
 	end interface
+	procedure(stopping_cond_signature), optional :: stopping_cond
+		!! If present, this function provides a condition to be satisfied
+		!! by the solution (when it is satisfied, the integration stops).
+		!! If it's not present, the integration continues until the maximum
+		!! number of iterations is reached.
+	integer, intent(in) :: outfile
+		!! Output file unit (default formatting)
+		!! If the condition is reached, it prints a line with a space.
+
 	integer :: i
 	real(wp) :: h, t
-	real(wp), dimension(1:4) :: k
+	real(wp), dimension(:,:), allocatable :: k
 	real(wp), dimension(:), allocatable :: y
 
 	allocate(y(size(y0)))
+	allocate(k(1:4,size(y0)))
 
 
 	!! Step and initialization
@@ -57,31 +71,29 @@ subroutine rk4(f,y0,t_initial,t_final,niter,t_array,y_array)
 	y = y0
 
 	!! Output initial step
-	if(present(t_array) .and. present(y_array)) then
-		allocate(t_array(0:niter),y_array(0:niter,size(y0)))
-		t_array(0) = t; y_array(:,0) = y
-	else
-		write(*,*) t, y
-	end if
+	write(*,*) t, y
 
 
-	do i = 1,niter
-		k(1) = h*f(t,y)
-		k(2) = h*f(t+h/2d0, y + k(1)/2d0)
-		k(3) = h*f(t+h/2d0, y + k(2)/2d0)
-		k(4) = h*f(t+h/2d0, y + k(3))
+	evolve: do i = 1,niter
+		k(1,:) = h*f(t,y)
+		k(2,:) = h*f(t+h/2d0, y + k(1,:)/2d0)
+		k(3,:) = h*f(t+h/2d0, y + k(2,:)/2d0)
+		k(4,:) = h*f(t+h/2d0, y + k(3,:))
 
-		y = y + (k(1) + 2*k(2) + 2*k(3) + k(4))/6d0
+		y = y + (k(1,:) + 2*k(2,:) + 2*k(3,:) + k(4,:))/6d0
 		t = t_initial + i*h
 
-		!! Output every step
-		if(present(t_array) .and. present(y_array)) then
-			t_array(i) = t; y_array(:,i) = y
-		else
-			write(*,*) t, y
+		if (present(stopping_cond)) then
+			if (stopping_cond(t,y) .eqv. .true.) then
+				write(*,*) " "
+				exit evolve
+			end if
 		end if
 
-	end do
+		!! Output every step
+		write(*,*) t, y
+
+	end do evolve
 
 
 end subroutine
