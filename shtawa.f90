@@ -19,6 +19,7 @@ contains
 	include "combinatorics/ncartprod.f90"
 	include "combinatorics/permutations.f90"
 	include "combinatorics/combinations.f90"
+	include "combinatorics/quicksort.f90"
 
 	include "interp/linear_interp.f90"
 	include "interp/multilinear_interp.f90"

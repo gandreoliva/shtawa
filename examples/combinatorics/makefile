@@ -14,6 +14,9 @@ permutations_example: shtawa
 combinations_example: shtawa
 	gfortran -I $(bin) $(bin)/shtawa.o $@.f90 -o $@.bin
 
+quicksort_example: shtawa
+	gfortran -I $(bin) $(bin)/shtawa.o $@.f90 -o $@.bin
+
 shtawa:
 	make -C ../../
 
