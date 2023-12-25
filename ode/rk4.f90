@@ -1,4 +1,4 @@
-subroutine rk4(f,y0,t_initial,t_final,niter,outfile,stopping_cond)
+subroutine rk4(f,y0,t_initial,t_final,niter,outfile,stopping_cond,outfreq)
 	!! Approximates the initial-value problem y'(t) = f(t,y(t)) with the initial
 	!! condition y(t=t_initial) = y0
 
@@ -52,6 +52,10 @@ subroutine rk4(f,y0,t_initial,t_final,niter,outfile,stopping_cond)
 		!! by the solution (when it is satisfied, the integration stops).
 		!! If it's not present, the integration continues until the maximum
 		!! number of iterations is reached.
+	integer, optional :: outfreq
+		!! output frequency.
+	integer :: outfreq_
+		!! Default output frequency = 1 (every step)
 	integer, intent(in) :: outfile
 		!! Output file unit (default formatting)
 		!! If the condition is reached, it prints a line with a space.
@@ -64,15 +68,17 @@ subroutine rk4(f,y0,t_initial,t_final,niter,outfile,stopping_cond)
 	allocate(y(size(y0)))
 	allocate(k(1:4,size(y0)))
 
-
 	!! Step and initialization
 	h = (t_final - t_initial)/niter
 	t = t_initial
 	y = y0
 
 	!! Output initial step
-	write(*,*) t, y
+	write(outfile,*) t, y
 
+	!! Set the default value of the output frequency
+	outfreq_ = 1 ! every step
+	if (present(outfreq)) outfreq_ = outfreq
 
 	evolve: do i = 1,niter
 		k(1,:) = h*f(t,y)
@@ -85,13 +91,14 @@ subroutine rk4(f,y0,t_initial,t_final,niter,outfile,stopping_cond)
 
 		if (present(stopping_cond)) then
 			if (stopping_cond(t,y) .eqv. .true.) then
-				write(*,*) " "
+				write(outfile,*) " "
 				exit evolve
 			end if
 		end if
 
-		!! Output every step
-		write(*,*) t, y
+		if (mod(i,outfreq_) == 0) then
+			write(outfile,*) t, y
+		end if
 
 	end do evolve
 
