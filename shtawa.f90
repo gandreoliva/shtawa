@@ -27,5 +27,7 @@ contains
 
 	include "ode/rk4.f90"
 
+	include "fourier/discrete_fourier.f90"
+
 
 end module
